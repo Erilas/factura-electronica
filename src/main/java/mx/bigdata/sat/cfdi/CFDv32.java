@@ -176,7 +176,7 @@ public final class CFDv32 implements CFDI {
     String sigStr = document.getSello();
     byte[] signature = b64.decode(sigStr); 
     byte[] bytes = getOriginalBytes();
-    Signature sig = Signature.getInstance("SHA1withRSA");
+    Signature sig = Signature.getInstance(cert.getSigAlgName());
     sig.initVerify(cert);
     sig.update(bytes);
     boolean bool = sig.verify(signature);
@@ -192,7 +192,7 @@ public final class CFDv32 implements CFDI {
     m.setProperty(Marshaller.JAXB_FRAGMENT, Boolean.TRUE);
     m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
     m.setProperty(Marshaller.JAXB_SCHEMA_LOCATION, 
-                  "http://www.sat.gob.mx/cfd/3  "
+                  "http://www.sat.gob.mx/cfd/3 "
                   + "http://www.sat.gob.mx/sitio_internet/cfd/3/cfdv32.xsd");
     byte[] xmlHeaderBytes = XML_HEADER.getBytes("UTF8");
     out.write(xmlHeaderBytes); 
@@ -223,9 +223,9 @@ public final class CFDv32 implements CFDI {
     return baos.toByteArray();
   }
     
-  String getSignature(PrivateKey key) throws Exception {
+  String getSignature(PrivateKey key, X509Certificate cert) throws Exception {
     byte[] bytes = getOriginalBytes();
-    Signature sig = Signature.getInstance("SHA1withRSA");
+    Signature sig = Signature.getInstance(cert.getSigAlgName());
     sig.initSign(key);
     sig.update(bytes);
     byte[] signed = sig.sign();
