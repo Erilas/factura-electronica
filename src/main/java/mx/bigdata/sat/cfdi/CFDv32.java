@@ -176,7 +176,7 @@ public final class CFDv32 implements CFDI {
     String sigStr = document.getSello();
     byte[] signature = b64.decode(sigStr); 
     byte[] bytes = getOriginalBytes();
-    Signature sig = Signature.getInstance("SHA1withRSA");
+    Signature sig = Signature.getInstance(cert.getSigAlgName());
     sig.initVerify(cert);
     sig.update(bytes);
     boolean bool = sig.verify(signature);
@@ -225,7 +225,7 @@ public final class CFDv32 implements CFDI {
     
   String getSignature(PrivateKey key) throws Exception {
     byte[] bytes = getOriginalBytes();
-    Signature sig = Signature.getInstance("SHA1withRSA");
+    Signature sig = Signature.getInstance(cert.getSigAlgName());
     sig.initSign(key);
     sig.update(bytes);
     byte[] signed = sig.sign();
