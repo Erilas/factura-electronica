@@ -128,7 +128,7 @@ public final class CFDv32 implements CFDI {
 
   public void sellar(PrivateKey key, X509Certificate cert) throws Exception {
     cert.checkValidity(); 
-    String signature = getSignature(key);
+    String signature = getSignature(key,cert);
     document.setSello(signature);
     byte[] bytes = cert.getEncoded();
     Base64 b64 = new Base64(-1);
